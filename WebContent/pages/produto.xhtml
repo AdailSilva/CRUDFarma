@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/templates/modeloSistema.xhtml">
+
+	<ui:define name="menu">
+		<ui:include src="/includes/menuPrincipal.xhtml" />
+	</ui:define>
+
+	<!-- ESTE BLOCO FICARIA DENTRO DO "conteudo" ou seja no "center" -->
+	<!-- usando [f:event] como opção ao @PostConstruct [preRenderView] faz o mesmo -->
+	<!-- [listener] chama uma função do MB e [type] diz o momento da chamada -->
+	<!-- <f:event listener="#{MBProduto.carregarListagem}" type="preRenderView" /> -->
+
+	<ui:define name="conteudo">
+
+		<!-- LISTAGEM -->
+		<!-- dataTable tem que está dentro de um [h:form] por conta do Ajax para os filtros usando o filterBy e o mesmo fazer submissões -->
+		<!-- ids criados para facilitar trabalhar com AJAX -->
+		<h:form id="frmProdListagem">
+			<!-- Tabela de Produtos -->
+			<!-- Propriedade [value] aqui serve para "amarrar" algo do xhtml com o ManagedBean -->
+			<!-- Chama os métodos acessores do ManagedBean para atributos -->
+			<!-- [filteredValue] nele irão os itens filtrados -->
+			<!-- [var] será um item apenas ensinará ao JSF como que ele terá que desenhar os itens -->
+			<!-- [var] é um interador -->
+			<!-- [widgetVar] com este vou limpar os campos da tabela na Atualização quando Gravar, Editar e Excluir. -->
+			<!-- [widgetVar] ou usar nos diálogos com a propriedade [oncomplete] com clearFilters() -->
+			<!-- [id] uso para atualizar via ajax já funções javascript chamo com [widgetVar] -->
+			<p:dataTable id="tblProdutos" widgetVar="tabelaProdutos"
+				emptyMessage="CRUD Facid|Wyden - Nenhum registro encontrado."
+				value="#{MBProduto.produtos}" var="i" paginator="true" rows="14"
+				filteredValue="#{MBProduto.produtosFiltrados}">
+
+				<!-- [facet] propriedade para cabeçalho[header] e rodapé[footer] no dataTable -->
+				<!-- chamando no botão o widgetVar="dialogProdNovo" -->
+				<!-- com [onclick e PF('').show(); comando javascript] pois [dialog] tem que ser chamado por um evento -->
+				<!-- chamar o método prepararNovo com o [actionListener] antes que o diálogo seja aberto para preparar o objeto -->
+				<!-- trocado ação [onclick] abre o diálogo antes de fazer a ação por [oncomplete] este primeiro faz a invocação da ação após completada ele chama o diálogo -->
+				<!-- propriedade [update] serve para atualizar componentes via AJAX (usa-se ":" a frente e para separação de "camadas" entre IDs) -->
+				<!-- para ícones do JQuery não necessida por o ponto inicial ao nome do componente -->
+				<!-- Chamando no segundo commandButton impressão de relatórios -->
+				<!-- sempre que possivelmente disparar erros, atualizar também o p:Grow (msgGlobal) -->
+				<f:facet name="header">CRUD Facid|Wyden [ Produto - Listagem ]</f:facet>
+				<f:facet name="footer">
+					<p:commandButton icon="ui-icon-plus"
+						actionListener="#{MBProduto.prepararNovo}"
+						oncomplete="PF('dialogProdNovo').show();"
+						update=":frmProdNovo:pnlgProdNovo1 :frmProdNovo:pnlgProdNovo2 :msgGlobal" />
+
+					<p:commandButton icon="ui-icon-print"
+						actionListener="#{MBProduto.imprimir}" />
+				</f:facet>
+
+				<!-- Colunas -->
+
+				<p:column style="text-align: center" headerText="Código"
+					filterBy="#{i.idproduto}" sortBy="#{i.idproduto}">
+					<h:outputText value="#{i.idproduto}" />
+				</p:column>
+
+				<p:column headerText="Descrição" filterBy="#{i.descricao}"
+					sortBy="#{i.descricao}">
+					<h:outputText value="#{i.descricao}" />
+				</p:column>
+
+				<p:column style="text-align: center" headerText="Qtde"
+					filterBy="#{i.quantidade}" sortBy="#{i.quantidade}">
+					<h:outputText value="#{i.quantidade}" />
+				</p:column>
+
+				<p:column style="text-align: center" headerText="Cód. de Barras"
+					filterBy="#{i.codigodebarras}" sortBy="#{i.codigodebarras}">
+					<h:outputText value="#{i.codigodebarras}" />
+				</p:column>
+
+				<p:column style="text-align: center" headerText="Custo"
+					filterBy="#{i.custo}" sortBy="#{i.custo}">
+					<h:outputText value="#{i.custo}" />
+				</p:column>
+
+				<p:column style="text-align: center" headerText="Preço"
+					filterBy="#{i.preco}" sortBy="#{i.preco}">
+					<h:outputText value="#{i.preco}" />
+				</p:column>
+
+				<p:column headerText="Fabricação" filterBy="#{i.fabricacao}"
+					sortBy="#{i.fabricacao}">
+					<h:outputText value="#{i.fabricacao}">
+						<f:convertDateTime locale="pt_BR" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Vencimento" filterBy="#{i.vencimento}"
+					sortBy="#{i.vencimento}">
+					<h:outputText value="#{i.vencimento}">
+						<f:convertDateTime locale="pt_BR" />
+					</h:outputText>
+				</p:column>
+
+
+				<!-- <p:column headerText="Último registro"
+					filterBy="#{i.ultimoregistro}" sortBy="#{i.ultimoregistro}">
+					<h:outputText value="#{i.ultimoregistro}">
+						<f:convertDateTime locale="pt_BR" />
+					</h:outputText>
+				</p:column> -->
+
+				<!-- <p:column headerText="Imagem" filterBy="#{i.imagem}"
+					sortBy="#{i.imagem}">
+					<h:outputText value="#{i.imagem}" />
+				</p:column> -->
+
+				<!-- para tipos booleanos 
+				<p:column headerText="Ativo">
+					<p:selectBooleanCheckbox value="#{i.ativo}" disabled="true" />
+				</p:column> -->
+
+				<p:column headerText="Similar" filterBy="#{i.similar}"
+					sortBy="#{i.similar}">
+					<h:outputText value="#{i.similar}" />
+				</p:column>
+
+				<!-- <p:column headerText="Observação" filterBy="#{i.observacao}"
+					sortBy="#{i.observacao}">
+					<h:outputText value="#{i.observacao}" />
+				</p:column> -->
+
+				<!-- COMPOSIÇÃO -->
+				<!-- <p:column headerText="Cód. Fabricante"
+					filterBy="#{i.fabricante.idfabricante}"
+					sortBy="#{i.fabricante.idfabricante}">
+					<h:outputText value="#{i.fabricante.idfabricante}" />
+				</p:column> -->
+
+				<p:column headerText="Fabricante"
+					filterBy="#{i.fabricante.descricao}"
+					sortBy="#{i.fabricante.descricao}">
+					<h:outputText value="#{i.fabricante.descricao}" />
+				</p:column>
+
+			</p:dataTable>
+
+		</h:form>
+
+		<!-- utilizando [dialog] (é importante que ele tenha seu próprio formulário) -->
+		<!-- [dialog] precisa ser chamado por um evento -->
+		<!--
+		[widgetVar - é possível com esta propriedade chamar a janela flutuante (abrir e fechar a janela)]
+		[closable FALSE - a janela não apresenta um "x" para que possa ser fechada diretamente]
+		[draggable FALSE - a janela não pode ser arrastada]
+		[resizable FALSE - a janela não pode ser redimensionada]
+		[header - Cabeçalho do Diálogo]
+		[modal TRUE - bloquear a janela abaixo]
+		[appendTo="@(body)" - separa o diálogo do restante das janelas - aplica modal para todos exceto o diálogo ] -->
+
+		<!-- Diálogo - NOVO -->
+		<p:dialog widgetVar="dialogProdNovo" closable="false"
+			draggable="false" resizable="false" modal="true" appendTo="@(body)"
+			header="Produto - Novo">
+
+			<!-- área de submissão própria -->
+			<!-- panelGrid para alinhamento dos componentes - propriedade [columns] quantidade das colunas desejadas-->
+			<!-- [outputLabel] saída de texto - propriedade [value] Descrição apresentada  -->
+			<!-- [inputText] entrada de texto - propriedade [size] tamanho do campo - [maxlength] número máximo de caracteres-->
+			<!-- value no inputText serve para preencher valores do ManagedBean -->
+			<!-- maxlength="" não vou usar para inteiros, há melhores maneiras de controle -->
+
+			<!--  colunas não utilizadas -->
+			<!-- <p:outputLabel value="Imagem: " />
+					<h:inputText size="0" maxlength="0"
+						value="#{MBProduto.produto.imagem}" /> -->
+
+			<!-- <p:outputLabel value="Ativo: " />
+					<h:inputText size="0" maxlength="0"
+						value="#{MBProduto.produto.ativo}" /> -->
+
+			<h:form id="frmProdNovo">
+				<h:panelGrid id="pnlgProdNovo1" columns="4">
+
+					<p:outputLabel value="Descrição: " />
+					<h:inputText size="30" maxlength="50" required="true"
+						requiredMessage="O campo 'Descrição' é obrigatório"
+						value="#{MBProduto.produto.descricao}" />
+
+					<p:outputLabel value="Quantidade: " />
+					<h:inputText size="30" required="true"
+						requiredMessage="O campo 'Quantidade' é obrigatório"
+						value="#{MBProduto.produto.quantidade}" />
+
+					<p:outputLabel value="Cód. Barras: " />
+					<h:inputText size="30" maxlength="11"
+						value="#{MBProduto.produto.codigodebarras}" />
+
+					<p:outputLabel value="Custo: " />
+					<h:inputText size="30" required="true"
+						requiredMessage="O campo 'Custo' é obrigatório"
+						value="#{MBProduto.produto.custo}" />
+
+					<p:outputLabel value="Preço: " />
+					<h:inputText size="30" required="true"
+						requiredMessage="O campo 'Preço' é obrigatório"
+						value="#{MBProduto.produto.preco}" />
+
+					<p:outputLabel value="Fabricação: " />
+					<h:inputText size="30" value="#{MBProduto.produto.fabricacao}" />
+
+					<p:outputLabel value="Vencimento: " />
+					<h:inputText size="30" value="#{MBProduto.produto.vencimento}" />
+
+					<p:outputLabel value="Similar: " />
+					<h:inputText size="30" maxlength="25"
+						value="#{MBProduto.produto.similar}" />
+
+					<h:panelGroup>
+
+						<!-- COMPOSIÇÃO -->
+						<!-- itemValue é o que grava no banco de dados -->
+						<!-- itemLabel é o que mostra pro usuário -->
+						<!-- selectItem para exibição de um dado no comboBox -->
+						<!-- selectItens para exibição de listagens em comboBox -->
+						<p:outputLabel style="color:red" value="*Fabricante.: " />
+					</h:panelGroup>
+
+					<p:selectOneMenu required="true"
+						requiredMessage="O campo 'Fabricante' é obrigatório"
+						value="#{MBProduto.produto.fabricante.idfabricante}">
+						<f:selectItem itemValue="" itemLabel="Selecione um fabricante" />
+						<f:selectItems value="#{MBProduto.comboFabricantes}" var="i"
+							itemValue="#{i.idfabricante}" itemLabel="#{i.descricao}" />
+					</p:selectOneMenu>
+
+				</h:panelGrid>
+
+
+				<h:panelGrid id="pnlgProdNovo2" columns="2">
+
+					<p:outputLabel value="Observação: " />
+					<p:inputTextarea cols="76" rows="4" autoResize="false"
+						placeholder="Digite aqui uma observação sobre o medicamento."
+						value="#{MBProduto.produto.observacao}" />
+
+					<!-- Composição -->
+					<!-- fabricante faz parte do produto -->
+
+
+				</h:panelGrid>
+
+				<!-- botões -->
+				<!-- evento [actionListener] no botão serve para invocar uma ação -->
+				<!-- evento [onclick] PF('dialogProdNovo').hide(); (javascript) - para Fechar o diálogo -->
+				<!-- evento [oncomplete] PF('dialogProdNovo').hide() este primeiro faz a invocação da ação após completada ele chama o hide() -->
+				<!-- propriedade [update] serve para atualizar componentes via AJAX (usa-se ":" a frente e para separação de "camadas" entre IDs) -->
+				<!-- no [update] apenas um espaço já faz com que seja separados os componentes -->
+
+				<h:panelGrid columns="2">
+
+					<p:commandButton value="Gravar" actionListener="#{MBProduto.novo}"
+						oncomplete="PF('dialogProdNovo').hide(); tabelaProdutos.clearFilters();"
+						update=":frmProdListagem:tblProdutos :msgGlobal" />
+
+					<p:commandButton value="Cancelar"
+						onclick="PF('dialogProdNovo').hide();" />
+
+				</h:panelGrid>
+
+			</h:form>
+
+		</p:dialog>
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fabricantes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="75" bottomMargin="20" uuid="6166b9f6-f692-47ae-99ee-af09a1bf2675">
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[ZHJvZ2FyaWEuZmFicmljYW50ZSBBUyAsODYsNzUsNDI4YWM2YmMtN2E1Ni00ZDBmLThlODYtMDA1
+N2Y5OWJhNmIzOw==]]>
+	</property>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Drogaria Data Adapter "/>
+	<queryString language="SQL">
+		<![CDATA[SELECT drogaria.fabricante.idfabricante,
+	drogaria.fabricante.descricao
+FROM drogaria.fabricante
+ORDER BY drogaria.fabricante.idfabricante ASC]]>
+	</queryString>
+	<field name="idfabricante" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="idfabricante"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fabricante"/>
+	</field>
+	<field name="descricao" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="descricao"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fabricante"/>
+	</field>
+	<title>
+		<band height="40" splitType="Stretch">
+			<image hAlign="Left">
+				<reportElement positionType="Float" x="0" y="0" width="209" height="40" uuid="335ca379-5d22-4e93-8abc-4a38cee6d197"/>
+				<imageExpression><![CDATA["/pictures/logo-index.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="220" y="1" width="219" height="39" uuid="a681d9bd-c261-4e3d-aeff-fa49a06158e1"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom" rotation="None" markup="none">
+					<font fontName="Bitstream Vera Sans" size="24" isBold="true" isUnderline="false"/>
+					<paragraph lineSpacing="Proportional"/>
+				</textElement>
+				<text><![CDATA[CRUDFarma 1.0]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="476" y="0" width="99" height="19" uuid="b89f5051-278d-4411-9e80-16bc6d8ff935"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="49" splitType="Stretch">
+			<ellipse>
+				<reportElement x="0" y="10" width="200" height="30" uuid="7751bf2a-0c54-4e20-990f-786c930b8bb6"/>
+			</ellipse>
+			<staticText>
+				<reportElement x="60" y="11" width="80" height="28" uuid="6ec7d499-4ec2-43c7-b89d-9c0e195cc575"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fabricantes]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="48" width="554" height="1" uuid="9e6461a4-8a5f-491a-8b72-97eceb829b41"/>
+			</line>
+			<staticText>
+				<reportElement x="220" y="9" width="334" height="30" uuid="22d5c0b1-833b-41c4-86ea-65a54b2d571e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Trabalho de programação WEB  -  AP2 Prof. Vinícius Pádua]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="80" height="20" uuid="bc81f060-021e-46c6-8a97-6358c548c549">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a458beb3-452c-4a3b-9d8a-03cc1e65d9b6"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="0" width="100" height="20" uuid="470767c0-dddd-4b29-8e81-69abb09c183c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b5720b6e-7318-44be-97e4-ccfd1435250a"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descrição]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="80" height="20" uuid="de95bb84-87d1-4d32-ad49-fec5d2ca37c6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a458beb3-452c-4a3b-9d8a-03cc1e65d9b6"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{idfabricante}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="0" width="100" height="20" uuid="358dd71f-0986-4b9e-8da5-40f0666d9e4e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b5720b6e-7318-44be-97e4-ccfd1435250a"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="34" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement positionType="Float" x="480" y="0" width="74" height="34" uuid="b7da0977-8f2b-4c82-b7f5-14ce77052668"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="4" width="480" height="16" uuid="161f71ab-26be-440b-b545-0a719043c618"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Endereço: R. Veterinário Bugyja Brito, 1354 - Horto, Teresina - PI, 64052-410.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="180" height="14" uuid="6b83cb70-0ad7-4c95-a672-cb3c94eca273"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Telefone: (86) 3216-7900]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="554" height="1" uuid="093f00c8-bbb6-47c7-bd21-13a43c81a22c"/>
+			</line>
+		</band>
+	</pageFooter>
+</jasperReport>

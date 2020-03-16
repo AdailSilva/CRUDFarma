@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>CRUDFarma - Facid|Wyden</title>
+	<!-- adicionando css para resolver problema do menu -->
+	<!-- procura os recursos dentro de resources -->
+	<h:outputStylesheet library="css" name="estilos.css" />
+	<!-- Editando Calendário do JSF -->
+	<h:outputScript library="js" name="scripts.js" />
+
+
+</h:head>
+
+<h:body>
+
+	<!-- MENSAGENS -->
+	<!-- [id] para trabalhar com AJAX [life] quantos segundos durará a mensagem em milisegundos [sticky] a mensagem não fecha, espera que o usuário feche -->
+	<p:growl id="msgGlobal" life="4000" sticky="" />
+
+	<!-- fullPage - layout responsivo -->
+	<p:layout fullPage="true">
+
+		<p:layoutUnit position="north">
+
+			<!-- Define um setor que será substituído -->
+			<ui:insert name="menu" />
+
+		</p:layoutUnit>
+
+		<p:layoutUnit position="center">
+
+			<!-- Define um setor que será substituído -->
+			<ui:insert name="conteudo" />
+
+		</p:layoutUnit>
+
+
+		<p:layoutUnit position="east" resizable="true" size="300" minSize="40"
+			maxSize="300">
+
+			<!-- Define um setor que será substituído -->
+			<ui:insert name="esquerda" />
+			<h2 align="center">TRABALHO AP2</h2>
+
+			<h3 align="center" style="color: blue">CRUDFarma</h3>
+
+			<h1 align="center" style="color: red">Programação WEB</h1>
+			<br />
+			<center>
+				<font color="blue"><i>Facid|Wyden</i> </font>
+			</center>
+			<center>
+				<h3>Prof. Vinícius Pádua</h3>
+			</center>
+			<center>
+				<h5>____________________________________</h5>
+			</center>
+			<center>
+				<h5>____________________________________</h5>
+			</center>
+
+			<h3 align="center">Adail dos Santos Silva</h3>
+			<h4 align="center">Matrícula: 162100594</h4>
+
+			<center>
+				<h5>____________________________________</h5>
+			</center>
+
+			<h4 align="center">João Paulo Ribeiro Azevedo</h4>
+			<h4 align="center">Matrícula: 171101986</h4>
+
+			<center>
+				<h5>____________________________________</h5>
+			</center>
+			<center>
+				<h5>____________________________________</h5>
+			</center>
+		</p:layoutUnit>
+
+	</p:layout>
+
+</h:body>
+
+</html>

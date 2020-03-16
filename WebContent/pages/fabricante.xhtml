@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/templates/modeloSistema.xhtml">
+
+	<ui:define name="menu">
+		<ui:include src="/includes/menuPrincipal.xhtml" />
+	</ui:define>
+
+	<ui:define name="conteudo">
+
+		<!-- LISTAGEM -->
+		<!-- dataTable tem que está dentro de um [h:form] por conta do Ajax para os filtros usando o filterBy e o mesmo fazer submissões -->
+		<!-- ids criados para facilitar trabalhar com AJAX -->
+		<h:form id="frmFabListagem">
+			<!-- Tabela de Fabricantes -->
+			<!-- Propriedade [value] aqui serve para "amarrar" algo do xhtml com o ManagedBean -->
+			<!-- Chama os métodos acessores do ManagedBean para atributos -->
+			<!-- [filteredValue] nele irão os itens filtrados -->
+			<!-- [var] será um item apenas ensinará ao JSF como que ele terá que desenhar os itens -->
+			<!-- [var] é um interador -->
+			<!-- [widgetVar] com este vou limpar os campos da tabela na Atualização quando Gravar, Editar e Excluir. -->
+			<!-- [widgetVar] ou usar nos diálogos com a propriedade [oncomplete] com clearFilters() -->
+			<p:dataTable id="tblFabricantes" widgetVar="tabelaFabricantes"
+				emptyMessage="CRUD Facid|Wyden - Nenhum registro encontrado."
+				value="#{MBFabricante.fabricantes}" var="i"
+				filteredValue="#{MBFabricante.fabricantesFiltrados}"
+				paginator="true" rows="14">
+
+				<!-- [facet] propriedade para cabeçalho[header] e rodapé[footer] no dataTable -->
+				<!-- chamando no botão o widgetVar="dialogFabNovo" -->
+				<!-- com [onclick e PF('').show(); comando javascript] pois [dialog] tem que ser chamado por um evento -->
+				<!-- chamar o método prepararNovo com o [actionListener] antes que o diálogo seja aberto para preparar o objeto -->
+				<!-- trocado ação [onclick] abre o diálogo antes de fazer a ação por [oncomplete] este primeiro faz a invocação da ação após completada ele chama o diálogo -->
+				<!-- propriedade [update] serve para atualizar componentes via AJAX (usa-se ":" a frente e para separação de "camadas" entre IDs) -->
+				<!-- para ícones do JQuery não necessida por o ponto inicial ao nome do componente -->
+				<!-- Chamando no segundo commandButton impressão de relatórios -->
+				<f:facet name="header">CRUD Facid|Wyden [ Fabricante - Listagem ]</f:facet>
+				<f:facet name="footer">
+					<p:commandButton icon="ui-icon-plus"
+						actionListener="#{MBFabricante.prepararNovo}"
+						oncomplete="PF('dialogFabNovo').show();"
+						update=":frmFabNovo:pnlgFabNovo" />
+
+					<p:commandButton icon="ui-icon-print"
+						actionListener="#{MBFabricante.imprimir}" />
+				</f:facet>
+
+				<!-- Colunas -->
+				<p:column headerText="Código" sortBy="#{i.idfabricante}"
+					filterBy="#{i.idfabricante}">
+					<h:outputText value="#{i.idfabricante}" />
+				</p:column>
+
+				<p:column headerText="Descrição" sortBy="#{i.descricao}"
+					filterBy="#{i.descricao}">
+					<h:outputText value="#{i.descricao}" />
+				</p:column>
+
+				<!-- COLUNA de OPÇÕES (EDITAR E EXCLUIR)-->
+				<p:column headerText="Opções">
+
+					<!-- setPropertyActionListener substitui o prepararEditar() -->
+					<!-- [target] alvo é a variável do MB - [value] valor é a linha clicada -->
+					<p:commandButton icon="ui-icon-pencil"
+						oncomplete="PF('dialogFabEditar').show();"
+						update=":frmFabEditar:pnlgFabEditar">
+						<f:setPropertyActionListener value="#{i}"
+							target="#{MBFabricante.fabricante}"></f:setPropertyActionListener>
+					</p:commandButton>
+
+					<!-- setPropertyActionListener substitui o prepararExcluir() -->
+					<!-- [target] alvo é a variável do MB - [value] valor é a linha clicada -->
+					<p:commandButton icon="ui-icon-trash"
+						oncomplete="PF('dialogFabExcluir').show();"
+						update=":frmFabExcluir:pnlgFabExcluir">
+						<f:setPropertyActionListener value="#{i}"
+							target="#{MBFabricante.fabricante}"></f:setPropertyActionListener>
+					</p:commandButton>
+
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+
+		<!-- utilizando [dialog] (é importante que ele tenha seu próprio formulário) -->
+		<!-- [dialog] precisa ser chamado por um evento -->
+		<!--
+		[widgetVar - é possível com esta propriedade chamar a janela flutuante (abrir e fechar a janela)]
+		[closable FALSE - a janela não apresenta um "x" para que possa ser fechada diretamente]
+		[draggable FALSE - a janela não pode ser arrastada]
+		[resizable FALSE - a janela não pode ser redimensionada]
+		[header - Cabeçalho do Diálogo]
+		[modal TRUE - bloquear a janela abaixo]
+		[appendTo="@(body)" - separa o diálogo do restante das janelas - aplica modal para todos exceto o diálogo ] -->
+
+		<!-- Diálogo - NOVO -->
+		<p:dialog widgetVar="dialogFabNovo" closable="false" draggable="false"
+			resizable="false" modal="true" appendTo="@(body)"
+			header="Fabricante - Novo">
+
+			<!-- área de submissão própria -->
+			<!-- panelGrid para alinhamento dos componentes - propriedade [columns] quantidade das colunas desejadas-->
+			<!-- [outputLabel] saída de texto - propriedade [value] Descrição apresentada  -->
+			<!-- [inputText] entrada de texto - propriedade [size] tamanho do campo - [maxlength] número máximo de caracteres-->
+			<!-- value no inputText serve para preencher valores do ManagedBean -->
+			<h:form id="frmFabNovo">
+				<h:panelGrid id="pnlgFabNovo" columns="2">
+					<p:outputLabel value="Descrição: " />
+					<h:inputText size="30" maxlength="50" required="true"
+						requiredMessage="O campo 'Descrição' é obrigatório"
+						value="#{MBFabricante.fabricante.descricao}" />
+				</h:panelGrid>
+
+				<!-- botões -->
+				<!-- evento [actionListener] no botão serve para invocar uma ação -->
+				<!-- evento [onclick] PF('dialogFabNovo').hide(); (javascript) - para Fechar o diálogo -->
+				<!-- evento [oncomplete] PF('dialogFabNovo').hide() este primeiro faz a invocação da ação após completada ele chama o hide() -->
+				<!-- propriedade [update] serve para atualizar componentes via AJAX (usa-se ":" a frente e para separação de "camadas" entre IDs) -->
+				<!-- no [update] apenas um espaço já faz com que seja separados os componentes -->
+				<h:panelGrid columns="2">
+
+					<p:commandButton value="Gravar"
+						actionListener="#{MBFabricante.novo}"
+						oncomplete="PF('dialogFabNovo').hide(); tabelaFabricantes.clearFilters();"
+						update=":frmFabListagem:tblFabricantes :msgGlobal" />
+
+					<p:commandButton value="Cancelar"
+						onclick="PF('dialogFabNovo').hide();" />
+
+				</h:panelGrid>
+			</h:form>
+
+		</p:dialog>
+
+		<!-- Diálogo - EXCLUIR -->
+		<p:dialog widgetVar="dialogFabExcluir" closable="false"
+			draggable="false" resizable="false" modal="true" appendTo="@(body)"
+			header="Fabricante - Excluir">
+
+			<h:form id="frmFabExcluir">
+				<h:panelGrid id="pnlgFabExcluir" columns="2">
+
+					<p:outputLabel value="Código: " />
+					<h:outputText value="#{MBFabricante.fabricante.idfabricante}" />
+
+					<p:outputLabel value="Descrição: " />
+					<h:outputText value="#{MBFabricante.fabricante.descricao}" />
+
+				</h:panelGrid>
+
+				<!-- botões -->
+				<p:panelGrid columns="2">
+
+					<p:commandButton value="Excluir"
+						actionListener="#{MBFabricante.excluir}"
+						oncomplete="PF('dialogFabExcluir').hide(); tabelaFabricantes.clearFilters();"
+						update=":frmFabListagem:tblFabricantes :msgGlobal" />
+
+					<p:commandButton value="Cancelar"
+						onclick="PF('dialogFabExcluir').hide();" />
+
+				</p:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+		<!-- Diálogo - EDITAR -->
+		<!-- editar apenas a descrição pois o código é autoincremento - código será apenas impresso -->
+		<p:dialog widgetVar="dialogFabEditar" closable="false"
+			draggable="false" resizable="false" modal="true" appendTo="@(body)"
+			header="Fabricante - Editar">
+
+			<h:form id="frmFabEditar">
+				<h:panelGrid id="pnlgFabEditar" columns="2">
+
+					<p:outputLabel value="Código: " />
+					<h:outputText value="#{MBFabricante.fabricante.idfabricante}" />
+
+
+					<p:outputLabel value="Descrição: " />
+					<h:inputText size="30" maxlength="50"
+						value="#{MBFabricante.fabricante.descricao}" />
+
+				</h:panelGrid>
+
+				<!-- botões -->
+				<p:panelGrid columns="2">
+
+					<p:commandButton value="Editar"
+						actionListener="#{MBFabricante.editar}"
+						oncomplete="PF('dialogFabEditar').hide(); tabelaFabricantes.clearFilters();"
+						update=":frmFabListagem:tblFabricantes :msgGlobal" />
+
+					<p:commandButton value="Cancelar"
+						onclick="PF('dialogFabEditar').hide();" />
+
+				</p:panelGrid>
+
+			</h:form>
+
+		</p:dialog>
+
+	</ui:define>
+
+</ui:composition>

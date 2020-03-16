@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<!-- área para o Menu -->
+	<!-- [outcome] caminho para regra de navegação -->
+	<h:form>
+
+		<!-- Menu -->
+		<p:menubar>
+			<p:submenu label="Arquivo">
+
+				<p:menuitem value="Eventos Facid" icon="ui-icon-flag"
+					url="https://eventosfacid.herokuapp.com/" target="blank" />
+
+				<p:menuitem value="Adail Silva" icon="ui-icon-contact"
+					url="https://www.facebook.com/Coder369/" target="blank" />
+
+				<p:menuitem value="João Paulo" icon="ui-icon-contact"
+					url="https://www.facebook.com/joaopaulorz/" target="blank" />
+
+				<p:menuitem value="Sair" icon="ui-icon-close"
+					url="https://www.google.com.br/" />
+
+			</p:submenu>
+
+			<p:submenu label="Cadastros">
+
+				<p:menuitem value="Fabricantes" icon="ui-icon-document"
+					outcome="/pages/fabricante.xhtml" />
+
+				<p:menuitem value="Produtos" icon="ui-icon-document"
+					outcome="/pages/produto.xhtml" />
+
+			</p:submenu>
+
+			<p:submenu label="Relatórios">
+
+				<p:menuitem value="Imprimir Fabricantes" icon="ui-icon-print"
+					actionListener="#{MBFabricante.imprimir}" />
+
+				<p:menuitem value="Imprimir Produtos" icon="ui-icon-print"
+					actionListener="#{MBProduto.imprimir}" />
+
+			</p:submenu>
+
+			<p:submenu label="Facid|Wyden">
+				<p:menuitem value="Integress.net"
+					icon="ui-icon-arrowreturnthick-1-e"
+					url="http://www.devryone.com.br/" target="blank" />
+
+				<p:menuitem value="Site Faculdade"
+					icon="ui-icon-arrowreturnthick-1-e"
+					url="https://www.wyden.com.br/facid/" target="blank" />
+			</p:submenu>
+
+			<p:submenu label="Ajuda">
+				<p:menuitem value="Sobre" icon="ui-icon-script"
+					outcome="/pages/sobre.xhtml" />
+			</p:submenu>
+
+		</p:menubar>
+
+	</h:form>
+
+</ui:composition>
